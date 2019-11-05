@@ -1,0 +1,39 @@
+include:
+  - project: 'city-of-helsinki/kuva/ci-cd-config/ci-configuration'
+    ref: v1
+    file: '/.gitlab-ci-template.yml'
+
+variables:
+  SASS_PATH: node_modules:src/assets/styles
+  K8S_SECRET_REACT_APP_API_URI: "https://venepaikka-api.test.hel.ninja/graphql_v2/"
+  SERVICE_PORT: 80
+  POSTGRES_ENABLED: 0
+  REVIEW_DISABLED: 1
+
+# Build stage must be included and it must extend .build. asd
+build:
+  extends: .build
+  only:
+    refs:
+      - develop
+      - branches
+      - pushes
+      
+# This will enable staging ci-pipeline
+staging:
+  # By default the staging environment is created from the master-branch.
+  # Here we define that it should be created from the branch called "develop" instead.
+  only:
+    refs:
+      - develop
+      - branches
+      - pushes
+
+  variables:
+    K8S_SECRET_ALLOWED_HOSTS: "*"
+    K8S_SECRET_DEBUG: 1
+    K8S_SECRET_GCS_BUCKET_NAME: "$KUBE_BUCKET_NAME"
+    K8S_SECRET_SECRET_KEY: "$TF_DJANGO_SECRET_KEY"
+    K8S_SECRET_SKIP_DATABASE_CHECK: 1
+    K8S_SECRET_RESERVATIONS_ADMIN_BASE_URL: "https://venepaikka-admin.test.kuva.hel.ninja"
+    TRACE: 1
