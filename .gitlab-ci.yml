@@ -38,7 +38,6 @@ build-production:
       - master
 
 review:
-  extends: .review
   variables:
     DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-review"
 
