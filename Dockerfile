@@ -25,7 +25,6 @@ COPY package*.json *yarn* ./
 
 # Install npm depepndencies
 ENV PATH /app/node_modules/.bin:$PATH
-# RUN yarn && yarn cache clean --force
 
 USER root
 
@@ -54,9 +53,6 @@ CMD ["react-scripts", "start"]
 # ===================================
 FROM appbase as staticbuilder
 # ===================================
-
-ARG REACT_APP_API_URI="https://venepaikka-api.test.hel.ninja/graphql_v2/"
-ENV REACT_APP_API_URI $REACT_APP_API_URI
 
 COPY . /app
 RUN yarn build

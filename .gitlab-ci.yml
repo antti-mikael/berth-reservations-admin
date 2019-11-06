@@ -5,20 +5,27 @@ include:
 
 variables:
   SASS_PATH: node_modules:src/assets/styles
-  K8S_SECRET_REACT_APP_API_URI: "https://venepaikka-api.test.hel.ninja/graphql_v2/"
   SERVICE_PORT: 80
   POSTGRES_ENABLED: 0
-  REVIEW_DISABLED: 1
 
-# Build stage must be included and it must extend .build. asd
-build:
+build-staging:
   extends: .build
+  variables:
+    K8S_SECRET_REACT_APP_API_URI: "https://venepaikka-api.test.hel.ninja/graphql_v2/"
   only:
     refs:
       - develop
       - branches
       - pushes
-      
+
+build-prod:
+  extends: .build
+  variables:
+    K8S_SECRET_REACT_APP_API_URI: "https://venepaikka-api.test.hel.ninja/graphql_v2/"
+  only:
+    refs:
+      - master
+
 # This will enable staging ci-pipeline
 staging:
   # By default the staging environment is created from the master-branch.
