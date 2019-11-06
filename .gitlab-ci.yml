@@ -8,9 +8,19 @@ variables:
   SERVICE_PORT: 80
   POSTGRES_ENABLED: 0
 
+build-review:
+  extends: .build
+  variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-review"
+    K8S_SECRET_REACT_APP_API_URI: "https://venepaikka-api.test.hel.ninja/graphql_v2/"
+  only:
+    refs:
+      - review
+
 build-staging:
   extends: .build
   variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-staging"
     K8S_SECRET_REACT_APP_API_URI: "https://venepaikka-api.test.hel.ninja/graphql_v2/"
   only:
     refs:
@@ -18,18 +28,25 @@ build-staging:
       - branches
       - pushes
 
-build-prod:
+build-production:
   extends: .build
   variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-production"
     K8S_SECRET_REACT_APP_API_URI: "https://venepaikka-api.test.hel.ninja/graphql_v2/"
   only:
     refs:
       - master
 
+review:
+  extends: .review
+  variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-review"
+
 # This will enable staging ci-pipeline
 staging:
   # By default the staging environment is created from the master-branch.
   # Here we define that it should be created from the branch called "develop" instead.
+  stage: staging
   only:
     refs:
       - develop
@@ -37,6 +54,7 @@ staging:
       - pushes
 
   variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-staging"
     K8S_SECRET_ALLOWED_HOSTS: "*"
     K8S_SECRET_DEBUG: 1
     K8S_SECRET_GCS_BUCKET_NAME: "$KUBE_BUCKET_NAME"
