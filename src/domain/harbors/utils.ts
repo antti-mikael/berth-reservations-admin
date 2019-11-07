@@ -8,6 +8,10 @@ export interface HarborData {
   water: number;
   name: string;
   numberOfPlaces: number;
+  streetAddress: string | null;
+  zipCode: string | null;
+  municipality: string | null;
+  wwwUrl: string | null;
 }
 
 export const getHarborsData = (data: HARBORS | undefined) => {
@@ -15,6 +19,7 @@ export const getHarborsData = (data: HARBORS | undefined) => {
     return data.harbors.edges.reduce<HarborData[]>((acc, harbor) => {
       if (harbor && harbor.node && harbor.node.properties) {
         const properties = harbor.node.properties.piers.edges.reduce<{
+
           electricity: number;
           gate: number;
           lighting: number;
@@ -50,8 +55,12 @@ export const getHarborsData = (data: HARBORS | undefined) => {
         return [
           ...acc,
           {
+            municipality: harbor.node.properties.municipality,
             name: harbor.node.properties.name || '-',
             numberOfPlaces: harbor.node.properties.numberOfPlaces || 0,
+            streetAddress: harbor.node.properties.streetAddress,
+            wwwUrl: harbor.node.properties.wwwUrl,
+            zipCode: harbor.node.properties.zipCode,
             ...properties,
           },
         ];

@@ -36,7 +36,10 @@ export const Simple = () => (
   <Table
     data={MOUNTAINS}
     columns={columns}
-    renderSubComponent={row => row.index}
+    renderSubComponent={row => {
+      console.log("row: ", row)
+      return row.index;
+    }}
     renderMainHeader={() => 'Demos'}
     canSelectRows
   />
