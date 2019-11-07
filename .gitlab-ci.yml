@@ -41,6 +41,8 @@ review:
 
 # This will enable staging ci-pipeline
 staging:
+  variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-staging"
   only:
     refs:
       - develop
