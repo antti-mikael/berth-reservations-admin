@@ -47,12 +47,3 @@ staging:
   only:
     refs:
       - develop
-
-  variables:
-    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-staging"
-    K8S_SECRET_ALLOWED_HOSTS: "*"
-    K8S_SECRET_DEBUG: 1
-    K8S_SECRET_GCS_BUCKET_NAME: "$KUBE_BUCKET_NAME"
-    K8S_SECRET_SECRET_KEY: "$TF_DJANGO_SECRET_KEY"
-    K8S_SECRET_SKIP_DATABASE_CHECK: 1
-    K8S_SECRET_RESERVATIONS_ADMIN_BASE_URL: "https://venepaikka-admin.test.kuva.hel.ninja"
